@@ -27,11 +27,29 @@ export default function Header() {
             <div className="logo-container">
                 <img src="./public/images/Logo.png" alt="Logo" className="Logo" />
             </div>
-            {/* <div className="user-menu">
-                <img src="./public/images/user.png" alt="user" className="user-img" />
-                <button onClick={handleLogout} className="btn-logout">
-                Logout</button>
-            </div> */}
+            <div className="nav-links">
+                <button
+                    className="category"
+                    type="button"
+                    onClick={() => navigate("/kategori")}
+                >
+                    <h4>Kategori</h4>
+                </button>
+                <button
+                    className="login"
+                    type="button"
+                    onClick={() => navigate("/login")}
+                >
+                    <h4>Login</h4>
+                </button>
+                <button
+                    className="register"
+                    type="button"
+                    onClick={() => navigate("/register")}
+                >
+                    <h4>Register</h4>
+                </button>
+            </div>
             {isBeranda && user && (
                 <div className="user-menu">
                     <div className="avatar-wrapper" onClick={() => setDropdownOpen(!dropdownOpen)}>
