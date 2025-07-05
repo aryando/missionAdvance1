@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Profil() {
     const navigate = useNavigate();
@@ -9,32 +10,46 @@ export default function Profil() {
     const [nama, setNama] = useState("");
     const [email, setemail] = useState("");
     const [phone, setPhone] = useState("");
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (!storedUser) {
+        const curentUser = JSON.parse(localStorage.getItem("user"));
+        if (!curentUser) {
             navigate("/Login");
-        } else {
-            setUser(storedUser);
-            setNama(storedUser.nama);
-            setemail(storedUser.email);
-            setPhone(storedUser.phone || "");
+            return;
         }
+        api.get(`/users/${curentUser.id}`)
+        .then(res => {
+            const data = res.data;
+            setUser(data);
+            setNama(data.nama);
+            setemail(data.email);
+            setPhone(data.phone);
+        })
+        .catch(err => {
+            console.error("Gagal mengambil data pengguna:", err);
+            navigate("/Login");
+        })
+        .finally(() => setLoading(false)); 
     }, [navigate]);
 
     const handleSave = () => {
-        const updateUser = { ...user, nama, email, phone };
-        setUser(updateUser);
-        localStorage.setItem("user", JSON.stringify(updateUser));
+        if (!user || !user.id) return; 
+        
+        axios.put(`/users/${user.id}`, {nama, email, phone})
+        .then (res => {
+            setUser(res.data);
+            localStorage.setItem("user", JSON.stringify(res.data));
+            alert("Profil berhasil diperbarui!")
+            navigate("/Beranda");
+        })
+        .catch(err => {
+            console.error("Gagal memperbarui profil:",err);
+            alert("Gagal memperbarui profil!");
+        })
+    };
 
-        const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-        const updateAccounts = accounts.map(acc =>
-            acc.email === user.email ? updateUser : acc
-        );
-        localStorage.setItem("accounts", JSON.stringify(updateAccounts));
-        alert("Profil berhasil diperbarui!");
-        navigate("/beranda");
-    }
+    if (loading) return <p>Loading...</p>;
 
     return (
         <>
@@ -51,28 +66,31 @@ export default function Profil() {
                     <img src="./images/user.png" alt="user" className="user-img" />
                     <h4>{user ? user.nama : "nama"}</h4>
                     <p>{user ? user.email : "Email"}</p>
-                    <label>Nama Lengkap</label>
+                    <label htmlFor="namaLengkap">Nama Lengkap</label>
                     <input
+                        id="namaLengkap"
                         type="text"
                         value={nama}
                         onChange={(e) => setNama(e.target.value)}
                         placeholder="Masukkan nama lengkap"
                     />
-                    <label>Email</label>
+                    <label htmlFor="email">Email</label>
                     <input
+                        id="email"
                         type="email"
                         value={email}
                         onChange={(e) => setemail(e.target.value)}
                         placeholder="Masukkan email"
                     />
-                    <label>No.Hp</label>
+                    <label htmlFor="noHp">No.Hp</label>
                     <input
+                        id="noHp"
                         type="number"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="Masukkan nomor Hp"
                     />
-                    <button className="btn" onClick={handleSave}>Simpan Perubahan</button>
+                    <button className="btn" onClick={handleSave}>Simpan</button>
                 </div>
             </main>
             <Footer />

@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import FormInput from "../components/FormInput";
+import api from "../services/api";
 export default function Login () {
     const navigate = useNavigate();
 
@@ -12,25 +13,26 @@ export default function Login () {
     } = useForm();
     
     const onSubmit = (data) => {
-        const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-        const akun = accounts.find(
-            (acc) => acc.email === data.email && acc.password === data.password);
-            console.log("Input dari form:", data);
-            console.log("Akun tersimpan:", accounts);
-            if (!akun) {
-                alert("email atau kata sandi dalah!");
+        api.get("/users")
+        .then(res => {
+            const users = res.data;
+            const user= users.find(u => u.email === data.email && u.password === data.password);
+
+            if(!user) {
+                alert("Email atau kata sandi salah!");
                 return;
             }
-
-            localStorage.setItem("isLogin", "true");
-            localStorage.setItem("user", JSON.stringify(akun));
+            localStorage.setItem("isLogin", true);
+            localStorage.setItem("user", JSON.stringify(user));
             alert("Login berhasil!");
-            console.log("navigate dipanggil");
-
-            navigate("/beranda");
-
+            navigate("/Beranda");
+        })
+        .catch(err => {
+            console.error("Gagal login:",err);
+            alert("Gagal login, silahkan coba lagi!");
+        })
         
-    }
+    };
     return (
         <>
         <Header />

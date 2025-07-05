@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 export default function Header() {
     const location = useLocation();
     const navigate = useNavigate();
-    const isBeranda = location.pathname === "/beranda";
+    const isBeranda = location.pathname === "/Beranda";
     const [user, setUser] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -35,30 +35,48 @@ export default function Header() {
                 >
                     <h4>Kategori</h4>
                 </button>
-                <button
-                    className="login"
-                    type="button"
-                    onClick={() => navigate("/login")}
-                >
-                    <h4>Login</h4>
-                </button>
-                <button
-                    className="register"
-                    type="button"
-                    onClick={() => navigate("/register")}
-                >
-                    <h4>Register</h4>
-                </button>
+                {!user && (
+                    <>
+                    <button
+                        className="login"
+                        type="button"
+                        onClick={() => navigate("/login")}
+                    >
+                        <h4>Login</h4>
+                    </button>
+                    <button
+                        className="register"
+                        type="button"
+                        onClick={() => navigate("/register")}
+                    >
+                        <h4>Register</h4>
+                    </button>    
+                    </>
+                )}
+                
             </div>
             {isBeranda && user && (
                 <div className="user-menu">
-                    <div className="avatar-wrapper" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                    <button
+                        className="avatar-wrapper"
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded={dropdownOpen}
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                setDropdownOpen(!dropdownOpen);
+                            }
+                        }}
+                        tabIndex={0}
+                        style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                    >
                         <img
                             src="/images/user.png"
                             alt="user"
                             className="user-image"
                         />
-                        </div>
+                    </button>
 
                         {dropdownOpen && (
                             <div className="dropdown-menu">
@@ -67,6 +85,8 @@ export default function Header() {
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                         )}
+                        
+
                 </div>
             )}
         </header>

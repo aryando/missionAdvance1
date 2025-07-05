@@ -16,28 +16,17 @@ export default function Register() {
     const password = watch("password");
 
     const onSubmit = (data) => {
-        const accounts = JSON.parse(localStorage.getItem("accounts")) || [];
-        
-        const emailSudahAda = accounts.some(acc => acc.email === data.email);
-        if (emailSudahAda) {
-            alert("Email sudah digunakan!");
-            return;
-        };
-
-        const akunBaru = {
-            nama: data.nama,
-            email: data.email,
-            password: data.password,
-        };
-        
-        accounts.push(akunBaru);
-        localStorage.setItem("accounts", JSON.stringify(accounts));
-
-        alert("Pendaftaran berhasil!");
-        navigate("/login");
+        axios.post ("/users", data)
+        .then(res => {
+            alert("Akun berhasil dibuat!");
+            navigate("/Login");
+        })
+        .catch(err => {
+            console.error("Gagal membuat akun:", err);
+            alert("Gagal membuat akun, silahkan coba lagi!");
+        })
     }
 
-    
     return (
         <>
         <Header />
@@ -101,5 +90,5 @@ export default function Register() {
             </form>
         </main>
         </>
-    )
+    );
 }
