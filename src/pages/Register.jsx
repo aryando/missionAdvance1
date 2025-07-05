@@ -16,7 +16,7 @@ export default function Register() {
     const password = watch("password");
 
     const onSubmit = (data) => {
-        axios.post ("/users", data)
+        api.post ("/users", data)
         .then(res => {
             alert("Akun berhasil dibuat!");
             navigate("/Login");
