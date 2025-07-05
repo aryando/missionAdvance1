@@ -3,6 +3,7 @@ import FormInput from "../components/FormInput";
 import FormSelect from "../components/FormSelect";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import api from "../services/api";
 
 export default function Register() {
     const navigate = useNavigate();
@@ -81,7 +82,7 @@ export default function Register() {
                         <button type="button" className="forgot-password">Lupa Password?</button>
                     </div>
                     <button type="submit" className="btn">Daftar</button>
-                    <button type="button" className="btn">Masuk</button>
+                    <button type="button" className="btn" onClick={() => navigate("/Login")}>Masuk</button>
                     <div className="divider">atau</div>
                     <button type="button" className="google-btn">
                         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Logo" className="google-logo"/>Daftar dengan Google
