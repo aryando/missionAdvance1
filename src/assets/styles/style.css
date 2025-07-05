@@ -269,7 +269,7 @@ input[type="number"],
 }
 
 .hero-section {
-    background-image: url(../public/images/hero.jpg);
+    background-image: url(../public/images/static/hero.jpg);
     background-size: cover;
     background-blend-mode: overlay;
     background-color: rgba(0, 0, 0, 0.8);
@@ -446,7 +446,7 @@ nav {
 /* newsletter */
 
 .news-letter {
-    background-image: url(../public/images/banner-cta1.jpg);
+    background-image: url(../public/images/static/banner-cta1.jpg);
     background-repeat: no-repeat;
     background-blend-mode: overlay;
     background-color: rgba(0, 0, 0, 0.8);
