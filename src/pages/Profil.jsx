@@ -7,8 +7,8 @@ import api from "../services/api";
 export default function Profil() {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
-    const [nama, setNama] = useState("");
-    const [email, setemail] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [loading, setLoading] = useState(true);
 
@@ -22,8 +22,8 @@ export default function Profil() {
         .then(res => {
             const data = res.data;
             setUser(data);
-            setNama(data.nama);
-            setemail(data.email);
+            setName(data.name);
+            setEmail(data.email);
             setPhone(data.phone);
         })
         .catch(err => {
@@ -34,9 +34,9 @@ export default function Profil() {
     }, [navigate]);
 
     const handleSave = () => {
-        if (!user || !user.id) return; 
+        if (!user?.id) return; 
         
-        axios.put(`/users/${user.id}`, {nama, email, phone})
+        api.put(`/users/${user.id}`, {name, email, phone})
         .then (res => {
             setUser(res.data);
             localStorage.setItem("user", JSON.stringify(res.data));
@@ -64,14 +64,14 @@ export default function Profil() {
                 </div>
                 <div className="profil-card">
                     <img src="./images/user.png" alt="user" className="user-img" />
-                    <h4>{user ? user.nama : "nama"}</h4>
+                    <h4>{user ? user.name : "nama"}</h4>
                     <p>{user ? user.email : "Email"}</p>
                     <label htmlFor="namaLengkap">Nama Lengkap</label>
                     <input
-                        id="namaLengkap"
+                        id="name"
                         type="text"
-                        value={nama}
-                        onChange={(e) => setNama(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Masukkan nama lengkap"
                     />
                     <label htmlFor="email">Email</label>
@@ -79,12 +79,12 @@ export default function Profil() {
                         id="email"
                         type="email"
                         value={email}
-                        onChange={(e) => setemail(e.target.value)}
+                        onChange={(e) => setEmail(e.target.value)}
                         placeholder="Masukkan email"
                     />
                     <label htmlFor="noHp">No.Hp</label>
                     <input
-                        id="noHp"
+                        id="phone"
                         type="number"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}

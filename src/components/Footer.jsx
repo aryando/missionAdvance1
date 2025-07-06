@@ -4,7 +4,7 @@ export default function Footer() {
          <footer className="footer">
             <div className="footer-content">
                 <div className="footer-logo">
-                    <img src="./images/Logo.png" alt="Logo" className="logo-footer"/>
+                    <img src="../images/static/Logo.png" alt="Logo" className="logo-footer"/>
                 </div>
                     <div className="footer-text">
                         <h6>Gali Potensi Anda Melalui Pembelajaran Video di hariesok.id!</h6>

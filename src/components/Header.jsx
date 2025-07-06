@@ -25,7 +25,7 @@ export default function Header() {
     return (
         <header className="Header">
             <div className="logo-container">
-                <img src="./public/images/static/Logo.png" alt="Logo" className="Logo" />
+                <img src="../images/static/Logo.png" alt="Logo" className="Logo" />
             </div>
             <div className="nav-links">
                 <button
